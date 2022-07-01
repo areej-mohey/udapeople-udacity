@@ -133,3 +133,29 @@ jobs:
           name: Check Backend against security vulnerabilities
           working_directory: ./backend
           command: npm audit --audit-level=critical
+
+workflows:
+  default:
+    jobs:
+      ## BUILD AND DEPLOY
+      - install-backend-dependencies
+      - install-frontend-dependencies
+
+      - build-backend:
+          requires:
+            - install-backend-dependencies
+      - build-frontend:
+          requires:
+            - install-frontend-dependencies
+      - test-backend:
+          requires:
+            - build-backend
+      - test-frontend:
+          requires:
+            -  build-frontend
+      - scan-backend:
+          requires:
+            - build-backend
+      - scan-frontend:
+          requires:
+            - build-frontend
