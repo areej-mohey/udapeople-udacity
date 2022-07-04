@@ -319,10 +319,10 @@ jobs:
             echo ${URL} 
             if curl -s ${URL} | grep -q "Welcome"
             then
-	      return 1
+              return 1
             else
-	      return 1
-	    fi
+              return 1
+             fi
 workflows:
   default:
     jobs:
