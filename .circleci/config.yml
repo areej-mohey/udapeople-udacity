@@ -267,15 +267,15 @@ jobs:
           paths:
             - frontend/dist
   deploy-backend:
-     executor: python
-     steps:
-       - checkout
-       - add_ssh_keys:
-           fingerprints:
-             - "b6:8c:76:09:b9:e0:8a:a5:4d:19:94:45:58:04:9a:78"
-       - attach_workspace:
-           at: .
-       - run:
+    executor: python
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "b6:8c:76:09:b9:e0:8a:a5:4d:19:94:45:58:04:9a:78"
+      - attach_workspace:
+          at: .
+      - run:
           name: Install dependencies
           working_directory: /tmp
           command: |
@@ -283,7 +283,7 @@ jobs:
             ansible --version
             pip install awscli
             aws --version
-       - run:
+      - run:
           name: Deploy backend
           working_directory: ./.circleci/ansible
           command: |
