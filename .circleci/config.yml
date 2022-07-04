@@ -291,6 +291,24 @@ jobs:
             ls -la
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml -vvv
+      - run:
+          name: Backend smoke test.
+          working_directory: ./backend
+          command: |
+            export API_URL="http://${BACKEND_IP}:3030"
+            curl "$API_URL/api/status"
+            if curl "${API_URL}/api/status" | grep "ok"
+	    then
+   		 return 0
+	    else
+    		return 1
+	    fi
+      - run:
+          name: Frontend smoke test.
+          working_directory: ./backend
+          command: |
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.eu-central-1.amazonaws.com/index.html"
+            curl -s ${URL} | grep -q "Welcome"
 workflows:
   default:
     jobs:
