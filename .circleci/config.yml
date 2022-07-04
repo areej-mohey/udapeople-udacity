@@ -22,12 +22,12 @@ commands:
       - run:
           name: Destroy udapeople backend cfn stack
           command: |
-            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.id >>
+            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
       - run:
           name: Destroy udapeople frontend cfn stack and S3 bucket
           command: |
-            aws s3 rm s3://udapeople-<< parameters.id >> --recursive
-            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.id >>
+            aws s3 rm s3://udapeople-<< parameters.workflow_id >> --recursive
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
   revert_migrations:
     description: Revert the last migration
     parameters:
@@ -209,7 +209,7 @@ jobs:
           paths:
             - .circleci/ansible/inventory
       - destroy_environment:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
   configure-infrastructure:
     executor: python
@@ -234,7 +234,7 @@ jobs:
             cat inventory
             ansible-playbook -i inventory configure-server.yml
       - destroy_environment:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
   run-migrations:
     executor: node
@@ -258,7 +258,7 @@ jobs:
             fi
             echo "WorkflowID=${CIRCLE_WORKFLOW_ID:0:7}"
       - destroy_environment:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
   deploy-frontend:
     executor: node
@@ -291,10 +291,10 @@ jobs:
           paths:
             - frontend/dist
       - destroy_environment:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
       - revert_migrations:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
   deploy-backend:
     executor: python
@@ -322,10 +322,10 @@ jobs:
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml -vvv
       - destroy_environment:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
       - revert_migrations:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
   smoke-test:
     executor: python
@@ -359,10 +359,10 @@ jobs:
               return 1
              fi
       - destroy_environment:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
       - revert_migrations:
-          id: ${CIRCLE_WORKFLOW_ID:0:7}
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail
 workflows:
   default:
