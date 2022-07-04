@@ -47,8 +47,6 @@ commands:
               ls -la
               npm run migrations:revert
             fi
-          when: << parameters.when >>
-
 jobs:
   install-backend-dependencies:
     executor: node
