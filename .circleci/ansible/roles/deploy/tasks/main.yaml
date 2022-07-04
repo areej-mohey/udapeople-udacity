@@ -13,11 +13,11 @@
       dest: /home/ubuntu/uda_app
       recursive: true
 
-  - name: "start server"
-    become: yes
-    command: pm2 start -f ./main.js
-    args:
-      chdir: /home/ubuntu/uda_app/dist
+#  - name: "start server"
+#    become: yes
+#    command: pm2 start -f ./main.js
+#    args:
+#      chdir: /home/ubuntu/uda_app/dist
     environment:
      ENVIRONMENT: production
      TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
