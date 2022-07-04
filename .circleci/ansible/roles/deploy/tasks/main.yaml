@@ -14,7 +14,7 @@
       recursive: true
 
   - name: "start server"
-    become: true
+    become: yes
     command: pm2 start -f ./main.js
     args:
       chdir: /home/ubuntu/uda_app/dist
