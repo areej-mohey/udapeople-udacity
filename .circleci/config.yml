@@ -16,6 +16,8 @@ commands:
   destroy_environment:
     description: Destroy Cloud Formation Stacks and infrastructure
     parameters:
+      when:
+        type: string
       workflow_id:
         type: string
     steps:
