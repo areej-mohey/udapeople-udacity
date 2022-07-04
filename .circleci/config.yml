@@ -21,10 +21,12 @@ commands:
     steps:
       - run:
           name: Destroy udapeople backend cfn stack
+          when: on_fail
           command: |
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
       - run:
           name: Destroy udapeople frontend cfn stack and S3 bucket
+          when: on_fail
           command: |
             aws s3 rm s3://udapeople-<< parameters.workflow_id >> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
@@ -209,6 +211,7 @@ jobs:
           paths:
             - .circleci/ansible/inventory
       - destroy_environment:
+          when: on_fail
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
   configure-infrastructure:
     executor: python
@@ -233,6 +236,7 @@ jobs:
             cat inventory
             ansible-playbook -i inventory configure-server.yml
       - destroy_environment:
+          when: on_fail
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
   run-migrations:
     executor: node
@@ -256,6 +260,7 @@ jobs:
             fi
             echo "WorkflowID=${CIRCLE_WORKFLOW_ID:0:7}"
       - destroy_environment:
+          when: on_fail
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
   deploy-frontend:
     executor: node
@@ -288,8 +293,10 @@ jobs:
           paths:
             - frontend/dist
       - destroy_environment:
+          when: on_fail
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert_migrations:
+          when: on_fail
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
   deploy-backend:
     executor: python
@@ -317,8 +324,10 @@ jobs:
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml -vvv
       - destroy_environment:
+          when: on_fail
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert_migrations:
+          when: on_fail
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
   smoke-test:
     executor: python
@@ -352,8 +361,10 @@ jobs:
               return 1
              fi
       - destroy_environment:
+          when: on_fail
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert_migrations:
+          when: on_fail
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 workflows:
   default:
