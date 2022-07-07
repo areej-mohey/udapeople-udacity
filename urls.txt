@@ -1,0 +1,14 @@
+[URL01]
+https://github.com/areej-mohey/udapeople-udacity/
+
+[URL02]
+http://udapeople-f4ea4ff.s3-website-us-east-1.amazonaws.com
+
+[URL03]
+http://udapeople-f4ea4ff.s3.amazonaws.com
+
+[URL04]
+http://http://ec2-3-92-182-215.compute-1.amazonaws.com:3030/
+
+[URL05]
+http://ec2-34-238-44-234.compute-1.amazonaws.com:9090/
